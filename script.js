@@ -1,19 +1,43 @@
 const btn = document.querySelector('button');
 const input = document.querySelector('input');
-const to_do_list = document.querySelector('.to-do-list');
+const to_do = document.querySelector('.to-do-list');
+let todos = [];
 
+window.onload = () => {
+    ;
+    todos = JSON.parse(localStorage.getItem('todos')) || [];
+    todos.forEach(todo => to_do_list(todo));
+}
 
-btn.addEventListener('click', ()=>{
+btn.addEventListener('click', () => {
     const input_val = input.value;
-    const div = document.createElement('div');
-    let error = 'enter something!'
-    if(input_val ==''){
-        console.log('value is empty')
-        div.innerHTML = error;
-        // div.style.border = '1px solid red';
-        // div.style.color = 'red';
-        to_do_list.appendChild(div)
-    }
-    div.innerHTML = input_val;
-    to_do_list.appendChild(div);
+    if (input_val == '')
+        alert('enter some do to...')
+    todos.push(input_val);
+    localStorage.setItem('todos', JSON.stringify(todos))
+    to_do_list(input_val)
+    input.value = ' ';
 })
+
+function to_do_list(val) {
+    let para = document.createElement('para');
+    para.style.cursor = 'pointer';
+    para.innerHTML = val + '<br>';
+    to_do.appendChild(para);
+
+    para.addEventListener('click', () => {
+        para.style.textDecoration = 'line-through';
+        remove_todo(val);
+    })
+    para.addEventListener('dblclick', () => {
+        to_do.removeChild(para);
+        remove_todo(val);
+    })
+}
+
+function remove_todo(todo) {
+    let index = todos.indexOf(todo);
+    if (index > -1)
+        todos.splice(index, 1);
+    localStorage.setItem('todos', JSON.stringify(todos))
+}
