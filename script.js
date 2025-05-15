@@ -4,7 +4,6 @@ const to_do = document.querySelector('.to-do-list');
 let todos = [];
 
 window.onload = () => {
-    ;
     todos = JSON.parse(localStorage.getItem('todos')) || [];
     todos.forEach(todo => to_do_list(todo));
 }
@@ -22,7 +21,7 @@ btn.addEventListener('click', () => {
 function to_do_list(val) {
     let para = document.createElement('para');
     para.style.cursor = 'pointer';
-    para.innerHTML = val + '<br>';
+    para.innerHTML = val ;
     to_do.appendChild(para);
 
     para.addEventListener('click', () => {
